@@ -148,7 +148,7 @@ enter_fellowship/
 - Conhecimento persistente por `label+campos` em `templates/templates.json` (tipos, comprimentos, padrões, delimitadores).
 - Cache de resultados em `results/`.
 
-### Boas práticas e detalhes importantes
+### Detalhes importantes
 - O sistema tenta sempre heurísticas posicionais antes de recorrer ao LLM e chama o LLM apenas para campos faltantes/invalidáveis.
 - Templates por hash vivem na memória durante a execução; o conhecimento agregado por `label` persiste em `templates/templates.json`.
 - O cache invalida automaticamente quando PDFs mudam ou quando a versão do código de extração se altera.

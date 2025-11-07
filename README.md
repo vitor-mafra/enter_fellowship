@@ -95,12 +95,15 @@ Saídas:
 ![Benchmarks](images/benchmarks.jpeg)
 Benchmarks alcançados nos datasets de CNH e RG - dois documentos com o que chamamos de estrutura rígida.
 
-A seguir os resultados com os
+Resultados para um dataset que combina documentos do tipo CNH e RG:
 ![Benchmarks com asterisco](images/benchmarks_asterisco.jpeg)
 Nota: para fins demonstrativos, a prova de que, com paralelismo, o tempo de extração é limitado inferiormente pelo tempo de extração da fila de documentos mais demorada.
 Nota 2: sim, o tempo do benchmark está quebrado por causa do paralelismo 😅 No entanto, é possível ver no terminal o tempo real que o programa levou para sua execução.
 
 ![Acurácia](images/acuracia.jpeg)
+
+### CNH? RG? Coisas extras que usei e que não cabem neste repositório
+Com base no [Brazilian-Identity-Document-Dataset](https://github.com/ricardobnjunior/Brazilian-Identity-Document-Dataset), processei e filtrei documentos (ilustrativos) que tinham um nível razoavelmente bom de OCR. Você pode ter acesso a esses (e outro!) dataset que criei para testar minha solução para esse desafio [clicando aqui](https://drive.google.com/drive/folders/1ucgCUpDiWug4m9AWDIuOvDqoli5UNABh?usp=sharing).
 
 ### Estrutura do projeto
 

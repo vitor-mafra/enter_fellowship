@@ -37,6 +37,15 @@ export OPENAI_API_KEY="sua_chave"
 echo "OPENAI_API_KEY=sua_chave" > .env
 ```
 
+### TL;DR / Quickstart
+
+```bash
+uv venv -p 3.13 && source .venv/bin/activate
+uv pip install -r requirements.txt
+export OPENAI_API_KEY="sua_chave"
+python main.py dataset*.json
+```
+
 ## Como usar
 
 ```bash
@@ -90,49 +99,54 @@ Saídas:
 
 ```
 enter_fellowship/
-  box_parser.py           
-  cache.py                
-  classification.py       
-  evaluator.py            
-  extraction.py           
-  format_validator.py     
-  hashing.py              
-  heuristics.py           
-  llm_utils.py            
-  main.py                 
-  oracle.py               
-  pipeline.py             
-  requirements.txt        
-  schemas/
-    __init__.py           
-  templates/
-    templates.json        
-  results/                
-  oracle_results/         
-  files/                  
-  dataset_*.json          
+├── box_parser.py                 # Segmenta caixas multi-campos e casa segmentos com campos
+├── cache.py                      # Cache de resultados + versionamento de código
+├── classification.py             # Classificação rígida/flexível via LLM (com cache por label)
+├── evaluator.py                  # Avaliação de acurácia (results vs oracle_results)
+├── extraction.py                 # Extração de texto com/sem coordenadas (PyMuPDF)
+├── format_validator.py           # Inferência/validação de formatos e extração de substrings válidas
+├── hashing.py                    # Hash perceptual estável (full/left/right) e matching de template
+├── heuristics.py                 # Matching posicional com pontuação composta e truncamentos defensivos
+├── llm_utils.py                  # Cliente OpenAI e utilitários de classificação/extração via LLM
+├── main.py                       # CLI (parâmetros, logging, delega ao pipeline)
+├── oracle.py                     # Extração via LLM + criação/uso de templates em memória
+├── pipeline.py                   # Orquestração: cache → classificação → extração → salvamento/benchmark
+├── requirements.txt
+├── README.md
+├── .gitignore
+├── templates/
+│   └── templates.json           # Conhecimento persistente por label (gerado/atualizado em runtime)
+├── results/                     # Saídas por PDF e output.json (gerados em runtime)
+│   └── *.json
+├── oracle_results/              # Gabaritos para avaliação (opcional)
+│   └── *.json
+├── files/                       # Exemplos pequenos de PDFs para teste rápido
+│   └── *.pdf
+├── dataset*.json               # Datasets de entrada (ex.: dataset.json, dataset_RG.json, ...)
+├── dataset_CNH/                 # PDFs grandes (ignorados no Git)
+├── dataset_RG/                  # PDFs grandes (ignorados no Git)
+└── dataset_compras_BNDES/       # PDFs grandes (ignorados no Git)
 ```
 
-### O que faz cada módulo (1 frase)
-- `main.py`: ponto de entrada CLI (parsing de args, logging, delega ao pipeline).
-- `pipeline.py`: orquestra o fluxo por documento (cache → classificação → extração → salvamento/benchmark).
-- `extraction.py`: extrai texto do PDF com/sem coordenadas via PyMuPDF.
-- `classification.py`: classifica o label como “rígida” ou “flexível” usando LLM e cache em memória.
-- `hashing.py`: gera hashes perceptuais estáveis (página inteira/metades) e decide similaridade de template.
-- `oracle.py`: faz extração via LLM e cria templates em memória com posições, modos e padrões de caixas.
-- `heuristics.py`: extrai campos por matching posicional usando pontuação espacial/semântica e conhecimento prévio.
-- `box_parser.py`: segmenta caixas multi‑campos por delimitadores/transições e casa segmentos com campos.
-- `format_validator.py`: infere/valida formato esperado (data/hora/número/UF) e corrige substrings válidas.
-- `template_manager.py`: persiste conhecimento por `label+campos` (tipo médio, comprimento, padrões e splits) em `templates.json`.
-- `cache.py`: cacheia cada resultado em `results/<pdf>.json` e guarda code_version para invalidar quando o código muda.
-- `evaluator.py`: compara `results/` com `oracle_results/` e imprime relatório de acurácia.
-- `llm_utils.py`: cliente OpenAI (carrega `OPENAI_API_KEY`) e chamadas de classificação/extração com resposta JSON.
-- `schemas/__init__.py`: espaço para definições futuras de schemas/validações.
+
+
+## Custo x acurácia (resumo da estratégia)
+- Classificação por label com cache (minimiza chamadas ao LLM).
+- Hashing perceptual multi‑região + templates em memória para reuso imediato.
+- Heurísticas posicionais e parsing de caixas multi‑campos antes do LLM.
+- LLM apenas para campos faltantes/invalidáveis (incremental) e para documentos flexíveis.
+- Conhecimento persistente por `label+campos` em `templates/templates.json` (tipos, comprimentos, padrões, delimitadores).
+- Cache de resultados em `results/` com versionamento do código para invalidar automaticamente.
 
 ## Boas práticas e notas
 - O sistema tenta sempre heurísticas posicionais antes de recorrer ao LLM e chama o LLM apenas para campos faltantes/invalidáveis.
 - Templates por hash vivem na memória durante a execução; o conhecimento agregado por `label` persiste em `templates/templates.json`.
 - O cache invalida automaticamente quando PDFs mudam ou quando a versão do código de extração se altera.
+
+## Troubleshooting
+- Erro de API: verifique `OPENAI_API_KEY` e conectividade; use `-v` para logs.
+- Erro PyMuPDF: cheque instalação do `pymupdf` e permissões de leitura do PDF.
+- Sem resultados em `results/`: confirme caminhos do `dataset.json` e existência dos arquivos.
 
 ## Avaliação de acurácia (opcional)
 

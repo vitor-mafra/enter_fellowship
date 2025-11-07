@@ -4,6 +4,8 @@
 
 Roubando o poder de extrapolação dos modelos de linguagem, o sistema aprende com cada interação. Com uma combinação de hashing perceptual, heurísticas espaciais e aprendizado incremental, ele reconhece automaticamente quando um documento pertence a um template já conhecido e realiza a extração de forma autônoma. Assim, os LLMs só são acionados em casos totalmente novos ou ambíguos, enquanto o pipeline se torna cada vez mais rápido, preciso e barato, reduzindo custos, latência e dependência de inferência externa a cada nova execução. Cada novo documento fortalece esse processo.
 
+Para uma breve introdução (em vídeo!) sobre a minha solução, clique [aqui](https://www.loom.com/share/3532c5e7c6154302845fb1ff431550c1)
+
 ![Rascunho do projeto](images/rascunho_projeto.jpeg)
 
 ### Instalação

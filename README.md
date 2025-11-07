@@ -107,6 +107,8 @@ Nota 2: sim, o tempo do benchmark está quebrado por causa do paralelismo 😅 N
 ### CNH? RG? Coisas extras que usei e que não cabem neste repositório
 Com base no [Brazilian-Identity-Document-Dataset](https://github.com/ricardobnjunior/Brazilian-Identity-Document-Dataset), processei e filtrei documentos (ilustrativos) que tinham um nível razoavelmente bom de OCR. Você pode ter acesso a esses (e outro!) dataset que criei para testar minha solução para esse desafio [clicando aqui](https://drive.google.com/drive/folders/1ucgCUpDiWug4m9AWDIuOvDqoli5UNABh?usp=sharing).
 
+Quer saber mais sobre esses estras? Assista e [esse outro vídeo curto](https://www.loom.com/share/5ec592b7e6b1472984ead43d46e6cf37)
+
 ### Estrutura do projeto
 
 ```

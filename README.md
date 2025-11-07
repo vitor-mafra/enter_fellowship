@@ -1,21 +1,14 @@
-## Sistema de Extração Estruturada de Documentos (OCR + LLM)
+## Enter AI Fellowship - Take Home Project
 
-Solução em Python 3.13 para extrair dados estruturados de PDFs (com OCR) combinando três estratégias: templates posicionais para documentos rígidos, heurísticas inteligentes para caixas multi‑campos e fallback com LLM para casos flexíveis ou campos faltantes. Aprende continuamente padrões/posições e reutiliza conhecimento entre execuções.
+**Extração de informação de documentos** se tornou trivial com LLMs. O verdadeiro desafio agora é fazer isso **de forma barata, rápida e eficiente**. Este projeto é uma tentativa de seguir nessa direção: transformar a extração de documentos em um processo adaptativo, que começa de mãos dadas com os modelos de linguagem, mas depois aprende a seguir sozinho de maneira muito mais ágil e econômica.
 
-### Arquitetura (alto nível)
+Roubando o poder de extrapolação dos modelos de linguagem, o sistema aprende com cada interação. Com uma combinação de hashing perceptual, heurísticas espaciais e aprendizado incremental, ele reconhece automaticamente quando um documento pertence a um template já conhecido e realiza a extração de forma autônoma. Assim, os LLMs só são acionados em casos totalmente novos ou ambíguos, enquanto o pipeline se torna cada vez mais rápido, preciso e barato, reduzindo custos, latência e dependência de inferência externa a cada nova execução. Cada novo documento fortalece esse processo.
 
-```
-dataset.json → Classificação (rígida/flexível) →
-  - Rígida: OCR com coordenadas → Hashing → [Template conhecido?] → Heurísticas posicionais → (LLM só p/ faltantes)
-  - Flexível: Texto simples → LLM
-→ Resultados em results/<arquivo>.json (+ output.json)
-→ Aprendizado: templates em memória (sessão) + conhecimento persistente por label (templates/templates.json)
-```
+![Rascunho do projeto](images/rascunho_projeto.jpeg)
 
-## Instalação (uv + Python 3.13)
+### Instalação
 
 Pré‑requisitos:
-- Python 3.13 instalado
 - macOS/Linux com bash/zsh (comandos abaixo)
 
 Passo a passo:
@@ -37,16 +30,16 @@ export OPENAI_API_KEY="sua_chave"
 echo "OPENAI_API_KEY=sua_chave" > .env
 ```
 
-### TL;DR / Quickstart
+#### TL;DR
 
 ```bash
 uv venv -p 3.13 && source .venv/bin/activate
 uv pip install -r requirements.txt
 export OPENAI_API_KEY="sua_chave"
-python main.py dataset*.json
+python main.py dataset.json
 ```
 
-## Como usar
+### Como usar
 
 ```bash
 # Execução básica (serial)
@@ -63,6 +56,9 @@ python main.py dataset.json --benchmark
 
 # Desativar cache de resultados
 python main.py dataset.json --no-cache
+
+# Note que essas opções podem ser combinadas, como em
+python main.py dataset.json --no-cache --parallel --benchmark
 ```
 
 Saídas:
@@ -85,7 +81,7 @@ Saídas:
 ]
 ```
 
-### Formato de saída (por PDF)
+#### Formato de saída (por PDF)
 
 ```json
 {
@@ -95,7 +91,7 @@ Saídas:
 }
 ```
 
-## Estrutura do projeto
+### Estrutura do projeto
 
 ```
 enter_fellowship/
@@ -130,27 +126,27 @@ enter_fellowship/
 
 
 
-## Custo x acurácia (resumo da estratégia)
+### Custo x acurácia (resumo da estratégia)
 - Classificação por label com cache (minimiza chamadas ao LLM).
 - Hashing perceptual multi‑região + templates em memória para reuso imediato.
 - Heurísticas posicionais e parsing de caixas multi‑campos antes do LLM.
 - LLM apenas para campos faltantes/invalidáveis (incremental) e para documentos flexíveis.
 - Conhecimento persistente por `label+campos` em `templates/templates.json` (tipos, comprimentos, padrões, delimitadores).
-- Cache de resultados em `results/` com versionamento do código para invalidar automaticamente.
+- Cache de resultados em `results/`.
 
-## Boas práticas e notas
+### Boas práticas e notas importantes
 - O sistema tenta sempre heurísticas posicionais antes de recorrer ao LLM e chama o LLM apenas para campos faltantes/invalidáveis.
 - Templates por hash vivem na memória durante a execução; o conhecimento agregado por `label` persiste em `templates/templates.json`.
 - O cache invalida automaticamente quando PDFs mudam ou quando a versão do código de extração se altera.
 
-## Troubleshooting
-- Erro de API: verifique `OPENAI_API_KEY` e conectividade; use `-v` para logs.
-- Erro PyMuPDF: cheque instalação do `pymupdf` e permissões de leitura do PDF.
+### Troubleshooting
+- Erro de API: verifique `OPENAI_API_KEY` e conectividade; use `-v` para logs. Sem `-v` nada nunca será impresso (otimização para os benchmarks).
+- Erros com PyMuPDF: cheque instalação do `pymupdf` e permissões de leitura do PDF.
 - Sem resultados em `results/`: confirme caminhos do `dataset.json` e existência dos arquivos.
 
-## Avaliação de acurácia (opcional)
+### Avaliação de acurácia (opcional)
 
 ```bash
 python evaluator.py
 ```
-Compara `results/*.json` com os gabaritos em `oracle_results/*.json` e imprime um resumo de acurácia geral/por arquivo/campo.
+Compara `results/*.json` com os gabaritos em `oracle_results/*.json` e imprime um resumo de acurácia geral/por arquivo/campo. Para gerar o output do oráculo, também usei o Chat GPT 5 mini.

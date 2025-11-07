@@ -1,0 +1,53 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Logs and environment variables
+*.log
+*.env
+
+# Dependencies and builds
+build/
+dist/
+*.egg-info/
+
+# Temporary files and IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Test files
+.coverage
+.pytest_cache/
+
+# Pipeline outputs
+results/
+knowledge_base.db
+knowledge_base.db-shm
+knowledge_base.db-wal
+extraction_cache.db
+results/*.meta.json
+templates/templates.json
+
+# Datasets
+dataset_CNH/**
+dataset_RG/**
+dataset_compras_BNDES/**
+
+# db files
+*.db
+*.db-shm
+*.db-wal
+
+dataset_CNH_RG.json
+dataset_CNH.json
+dataset_RG.json
+dataset_compras_BNDES.jsonoracle_results/**
+oracle_results/**

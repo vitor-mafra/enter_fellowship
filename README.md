@@ -93,10 +93,14 @@ Saídas:
 
 ### Resultados
 ![Benchmarks](images/benchmarks.jpeg)
-```
+Benchmarks alcançados nos datasets de CNH e RG - dois documentos com o que chamamos de estrutura rígida.
 
-```
+A seguir os resultados com os
+![Benchmarks com asterisco](images/benchmarks_asterisco.jpeg)
+Nota: para fins demonstrativos, a prova de que, com paralelismo, o tempo de extração é limitado inferiormente pelo tempo de extração da fila de documentos mais demorada.
+Nota 2: sim, o tempo do benchmark está quebrado por causa do paralelismo 😅 No entanto, é possível ver no terminal o tempo real que o programa levou para sua execução.
 
+![Acurácia](images/acuracia.jpeg)
 
 ### Estrutura do projeto
 
@@ -141,7 +145,7 @@ enter_fellowship/
 - Conhecimento persistente por `label+campos` em `templates/templates.json` (tipos, comprimentos, padrões, delimitadores).
 - Cache de resultados em `results/`.
 
-### Boas práticas e notas importantes
+### Boas práticas e detalhes importantes
 - O sistema tenta sempre heurísticas posicionais antes de recorrer ao LLM e chama o LLM apenas para campos faltantes/invalidáveis.
 - Templates por hash vivem na memória durante a execução; o conhecimento agregado por `label` persiste em `templates/templates.json`.
 - O cache invalida automaticamente quando PDFs mudam ou quando a versão do código de extração se altera.

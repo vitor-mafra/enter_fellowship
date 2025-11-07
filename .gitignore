@@ -49,5 +49,6 @@ dataset_compras_BNDES/**
 dataset_CNH_RG.json
 dataset_CNH.json
 dataset_RG.json
-dataset_compras_BNDES.jsonoracle_results/**
+dataset_compras_BNDES.json
+oracle_results/**
 oracle_results/**

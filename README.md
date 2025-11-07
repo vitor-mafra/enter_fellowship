@@ -1,4 +1,4 @@
-## Enter AI Fellowship - Take Home Project
+# Enter AI Fellowship - Take Home Project
 
 **Extração de informação de documentos** se tornou trivial com LLMs. O verdadeiro desafio agora é fazer isso **de forma barata, rápida e eficiente**. Este projeto é uma tentativa de seguir nessa direção: transformar a extração de documentos em um processo adaptativo, que começa de mãos dadas com os modelos de linguagem, mas depois aprende a seguir sozinho de maneira muito mais ágil e econômica.
 
@@ -81,7 +81,7 @@ Saídas:
 ]
 ```
 
-#### Formato de saída (por PDF)
+#### Formato de saída (para cada PDF)
 
 ```json
 {
@@ -90,6 +90,13 @@ Saídas:
   "situacao": "Ativo"
 }
 ```
+
+### Resultados
+![Benchmarks](images/benchmarks.jpeg)
+```
+
+```
+
 
 ### Estrutura do projeto
 
